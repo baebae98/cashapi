@@ -6,18 +6,47 @@
 <style type="text/css">
 /* 예정  */
 .point {
-	color: rgb(128, 255, 0);
+	color: rgb(149, 214, 41)
 }
 </style>
 </head>
 <body>
-	<h1>CashBook Stats Data</h1>
-<body>
-	<a href="http://localhost/admin/index">메인페이지</a>
-	<a href="http://localhost/admin/cashbookByMonth/-1/-1">월별 가계부</a>
-	<a href="http://localhost/admin/noticeList/1/5">공지사항</a>
-	<a href="http://localhost/admin/logout">logout</a>
-	<a href="/cashStats.html">연도별 월간 총 지출액</a>
+	<!-- 상단 메뉴바 -->
+	<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+		<div class="container">
+			<ul class="navbar-nav ">
+				<li class="nav-item active">
+					<a class="nav-link" href="http://localhost/admin/index">[CashBookProject]</a>
+				</li>
+				<li class="nav-item active">
+					<!-- 메인 페이지 -->
+					<a class="nav-link" href="http://localhost/admin/index">[HOME]</a>
+				</li>
+				<li class="nav-item active">
+					<!-- 월별 가계부 -->
+					<a class="nav-link" href="http://localhost/admin/cashbookByMonth/-1/-1">[CashBook]</a>
+				</li>
+				<li class="nav-item active">
+						<a class="nav-link" href="http://localhost/admin/noticeList/1/5">[Notice]</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="http://localhost/admin/logout">[Log-out]</a>
+				</li>
+				<li class="nav-item active">
+					<a class="nav-link" href="/cashStats.html">연도별 월간 총 지출액</a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+		<!-- 상단 바 밑에 있는 점보 -->
+	<div class="jumbotron jumbotron-fluid bg-warning">
+  		<div class="container">
+  			<h1>cashStats</h1>
+  			<p>cashStats페이지 입니다.</p>
+		</div>
+	</div>
+	<div class="container">
+	<!-- 샘플요청1 -->
 	<div>
 		<div>
 			<!--호출-->
@@ -35,7 +64,18 @@
 			<canvas id="myChart"></canvas>
 		</div>
 	</div>
-
+	<!-- 샘플요청2 -->
+	<div>
+		<div> <!-- 0) 호출 -->
+			<span>2) 년도별 수입/지출  :</span>
+			<input type="text" id="year">
+			<button id="totalOutAndInByYearChart" type="button">Chart</button>
+		</div>
+		<div>
+			<canvas id="pieChart"></canvas>
+		</div>
+	</div>
+	</div>
 </body>
 </body>
 
@@ -43,7 +83,38 @@
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <!-- chart.js : https://www.chartjs.org/docs/latest/getting-started/ -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+
+<!-- w3schools.com bootstrap -->
+ <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 <script>
+	//년도별 수입/지출액
+	$('#totalOutAndInByYearChart').click(function(){
+		$.ajax({
+			url:'/totalOutAndInByYear/'+$('#year').val(),
+			type:'get',
+			success:function(data){
+				console.log(data);
+				let pieCtx = $('#pieChart');
+				let pieChart = new Chart(pieCtx,{
+					type:'pie',
+					data:{
+						labels:['수입','지출'], //항목들
+						datasets: [{
+							backgroundColor:['rgb(255, 128, 128)','rgb(255, 192, 128)'],
+								borderColor:['rgba(255, 99, 132, 1)', 'rgba(54, 162, 235, 1)'],
+							data:[data.수입,data.지출] 	//데이터
+						}]
+					},
+					options:{}
+				});
+			}
+		});
+	});
+	
+	//년도지출액
 	$('#totalMonthlyByYearChart').click(function(data){
 		$.ajax({
 			url:'/totalMonthlyByYear',
