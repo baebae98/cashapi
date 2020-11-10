@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+/* 예정  */
+.point {
+	color: rgb(128, 255, 0);
+}
+</style>
+</head>
+<body>
+	<h1>CashBook Stats Data</h1>
+<body>
+	<a href="http://localhost/admin/index">메인페이지</a>
+	<a href="http://localhost/admin/cashbookByMonth/-1/-1">월별 가계부</a>
+	<a href="http://localhost/admin/noticeList/1/5">공지사항</a>
+	<a href="http://localhost/admin/logout">logout</a>
+	<a href="/cashStats.html">연도별 월간 총 지출액</a>
+	<div>
+		<div>
+			<!--호출-->
+			<span> 연도별 월 지출액 :</span>
+			<button id="totalMonthlyByYearTable" type="button">테이블</button>
+			<button id="totalMonthlyByYearChart" type="button">차트</button>
+			<button id="totalMonthlyByYearExcel" type="button">엑셀</button>
+		</div>
+		<!-- 출력 -->
+		<div>
+			<span id="totalMonthlyByYearTableResult" class="point">
+				데이터 결과물이 테이블, 차트, 엑셀 파일 다운로드 중 하나로 나옵니다 </span>
+		</div>
+		<div>
+			<canvas id="myChart"></canvas>
+		</div>
+	</div>
+
+</body>
+</body>
+
+<!-- google CDN -->
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<!-- chart.js : https://www.chartjs.org/docs/latest/getting-started/ -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.8.0"></script>
+<script>
+	$('#totalMonthlyByYearChart').click(function(data){
+		$.ajax({
+			url:'/totalMonthlyByYear',
+			type:'get',
+			success: function(data) {	
+				var ctx = document.getElementById('myChart').getContext('2d');
+				var chart = new Chart(ctx, {
+					 // The type of chart we want to create
+				    type: 'bar', //chart 종류: 바,곡선...등
+
+				    // The data for our dataset
+				    data: {
+				        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+				        datasets: [{
+				            label: '2020년 월별 지출',
+				            backgroundColor: [
+				            	 'rgb(255, 128, 128)',
+				            	    'rgb(255, 192, 128)',
+				            	    'rgb(255, 255, 128)',
+				            	    'rgb(192, 255, 128)',
+				            	    'rgb(128, 255, 128)',
+				            	    'rgb(128, 255, 192)',
+				            	    'rgb(128, 255, 255)',
+				            	    'rgb(128, 192, 255)',
+				            	    'rgb(128, 128, 255)',
+				            	    'rgb(192, 128, 255)',
+				            	    'rgb(255, 128, 255)',
+				            	    'rgb(255, 128, 192)'
+				                
+				            ],
+				            borderColor: [
+				            	'rgba(255, 99, 132, 1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)',
+				                'rgba(255, 99, 132, 1)',
+				                'rgba(54, 162, 235, 1)',
+				                'rgba(255, 206, 86, 1)',
+				                'rgba(75, 192, 192, 1)',
+				                'rgba(153, 102, 255, 1)',
+				                'rgba(255, 159, 64, 1)'
+				            ],
+				            //data 속성의 배열값은 ajax호출 후 결과값으로 채워야 한다.
+				            data: [data.January, data.February, data.March,  data.April,  data.May,  data.June,  data.July, data.August, data.September, data.October, data.November, data.December],
+				        	borderWidth: 1
+				        }]
+				    },
+
+				    // Configuration options go here
+				    options: {}
+				});
+			}
+		});
+	});
+	//char.js
+	$('#totalMonthlyByYearChart').click(function(){
+		var ctx = document.getElementById('myChart').getContext('2d');
+		var chart = new Chart(ctx, {
+			 // The type of chart we want to create
+		    type: 'bar', //chart 종류: 바,곡선...등
+
+		    // The data for our dataset
+		    data: {
+		        labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July','August','September','October','November','December'],
+		        datasets: [{
+		            label: '201년 월별 지출',
+		            backgroundColor: [
+		            	 'rgb(255, 128, 128)',
+		            	    'rgb(255, 192, 128)',
+		            	    'rgb(255, 255, 128)',
+		            	    'rgb(192, 255, 128)',
+		            	    'rgb(128, 255, 128)',
+		            	    'rgb(128, 255, 192)',
+		            	    'rgb(128, 255, 255)',
+		            	    'rgb(128, 192, 255)',
+		            	    'rgb(128, 128, 255)',
+		            	    'rgb(192, 128, 255)',
+		            	    'rgb(255, 128, 255)',
+		            	    'rgb(255, 128, 192)'
+		                
+		            ],
+		            borderColor: [
+		            	'rgba(255, 99, 132, 1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)',
+		                'rgba(255, 99, 132, 1)',
+		                'rgba(54, 162, 235, 1)',
+		                'rgba(255, 206, 86, 1)',
+		                'rgba(75, 192, 192, 1)',
+		                'rgba(153, 102, 255, 1)',
+		                'rgba(255, 159, 64, 1)'
+		            ],
+		            //data 속성의 배열값은 ajax호출 후 결과값으로 채워야 한다.
+		            data: [2398497,1059593,1304033,1682770,1527027,126365,1452210,942205,1717146,1428384,1429905,1623108],
+		        	borderWidth: 1
+		        }]
+		    },
+
+		    // Configuration options go here
+		    options: {}
+		});
+	});
+	
+
+	$("#totalMonthlyByYearTable").click(function(){
+		/* $('#totalMonthlyExpendituresByYearTableResult').html('totalMonthlyExpendituresByYear Table Result'); */
+		$.ajax({
+			url:'/totalMonthlyByYear',
+			type:'get',
+			success: function(data) {	
+				console.log(data);
+				let html = `
+				<table border="1">
+				<tr>
+					<th>January</th>
+					<th>February</th>
+					<th>March</th>
+					<th>April</th>
+					<th>May</th>
+					<th>June</th>
+					<th>July</th>
+					<th>August</th>
+					<th>September</th>
+					<th>October</th>
+					<th>November</th>
+					<th>December</th>
+				</tr>
+				<tr>
+					<td>${data.January}</td>
+					<td>${data.February}</td>
+					<td>${data.March}</td>
+					<td>${data.April}</td>
+					<td>${data.May}</td>
+					<td>${data.June}</td>
+					<td>${data.July}</td>
+					<td>${data.August}</td>
+					<td>${data.September}</td>
+					<td>${data.October}</td>
+					<td>${data.November}</td>
+					<td>${data.December}</td>
+				</tr>
+				</table>
+				`;
+				$('#totalMonthlyByYearTableResult').html(html);
+			}	
+		});
+	});
+
+	</script>
+</html>
